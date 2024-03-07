@@ -38,12 +38,124 @@
     - For any other route not defined in the server return 404
 
   Testing the server - run `npm run test-todoServer` command in terminal
- */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+*/
+const express = require('express');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+
+// Putting a '[]' if it's a empty file.
+// empty file or file not having an array will result in an error
+fs.readFile('./todos.json', 'utf-8', (err, data)=>{
+  if(data.length === 0){
+    fs.writeFile('./todos.json', "[]", (err)=> {if(err) throw err;});
+  };
+});
+
+function findIndex(arr, id){
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].id == id) return i;
+  }
+  return -1;
+}
+
+const app = express();
+app.use(bodyParser.json()); // Body parser
+
+// GET
+app.get('/todos', (req,res)=>{
+  fs.readFile('todos.json', 'utf-8', (err,data)=>{
+    res.status(200).json( JSON.parse(data) );
+  });
+})
+
+// GET -id
+app.get('/todos/:id', (req,res)=>{
+  const id =  req.params.id; // ID is a "String" since it's taken from the URL.
+  fs.readFile('todos.json', 'utf-8', (err,data)=>{
+    if(err) throw err;
+
+    const todos_arr = JSON.parse(data);
+    let index = findIndex(todos_arr, id);
+    if (index === -1) {
+      res.status(404).send();
+    }
+    else res.status(200).json(todos_arr[index]);
+  });
+})
+
+// POST
+app.post('/todos', (req,res)=>{
+  // creating & assigning values to the object
+  const id = Math.floor(Math.random()*1000000);
+  const{ title, completed, description } = req.body;  // declaring object (newTodo) using object destructring
+  const newTodo = { id, title,  completed, description};
+
+  fs.readFile('todos.json', 'utf-8', (err,data)=>{
+    if(err) throw err;
+    let todos_arr = JSON.parse(data); // parsing string to JSON
+    todos_arr.push(newTodo);  // pushing json object to array
+    const todoJsonString = JSON.stringify(todos_arr);   // converting to JSON object array to json-string 
+
+    fs.writeFile('todos.json', todoJsonString, (err)=>{
+      if(err) throw err;
+      res.status(201).json({
+        id: newTodo.id
+      });
+    });
+  });
+})
+
+// PUT
+app.put('/todos/:id', (req,res)=>{
+  const id = req.params.id;
+  fs.readFile('todos.json', 'utf-8', (err,data)=>{
+    if(err) throw err;
+    let todos_arr = JSON.parse(data);
+    const index = findIndex(todos_arr, id); // checking for id match
+    if(index === -1){
+      res.status(404).send();
+    }
+    else{
+      if('title' in req.body) todos_arr[index].title = req.body.title;
+      if('completed' in req.body) todos_arr[index].completed = req.body.completed;
+      if('description' in req.body) todos_arr[index].description = req.body.description;
+
+      const jsonString = JSON.stringify(todos_arr);
+      fs.writeFile('todos.json', jsonString, (err)=>{
+        if(err) throw err;
+        res.status(200).json(todos_arr[index]);
+      });
+    }
+  });
+})
+
+// DELETE
+app.delete('/todos/:id', (req,res)=>{
+  const id = req.params.id;
+  fs.readFile('todos.json', 'utf-8', (err,data)=>{
+    if(err) throw err;
+    let todos_arr = JSON.parse(data);
+    const index = findIndex(todos_arr, id);
+
+    if(index === -1){
+      res.status(404).send();
+    }
+    else{
+      todos_arr.splice(index, 1);  // to remove an element from an array
+      const jsonString = JSON.stringify(todos_arr);
+      fs.writeFile('todos.json', jsonString, (err)=>{
+        if(err) throw err;
+      })
+      res.status(200).send();
+    }
+  })
+})
+
+// for all routes it will return 404 hence it needs to be places at the end
+app.all('*', (req,res)=>{
+  res.status(404).send();
+})
+
+app.listen(3000, ()=> console.log("Server running on port 3000"));
+
+module.exports = app;

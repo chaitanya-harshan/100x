@@ -5,6 +5,18 @@
  */
 
 function sleep(milliseconds) {
+    return new Promise((resolve)=>{
+        const start = Date.now();
+        while( Date.now()-start < milliseconds ){
+            // do nothing
+        }
+        resolve();   // * When resolve is called independently, it needs to be XXX(); *
+    });
 }
+
+
+sleep(1000).then(function(){
+    console.log("after 1 sec");
+})
 
 module.exports = sleep;

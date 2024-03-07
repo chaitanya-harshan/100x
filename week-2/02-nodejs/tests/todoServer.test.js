@@ -13,7 +13,7 @@ describe('Todo API', () => {
     if (globalServer) {
         globalServer.close();
     }
-    globalServer = server.listen(3000);
+    globalServer = server.listen(4000); // I changed it to 4000 from 3000 becsaue it's saying 3000 is already in use
     done()
   });
 
