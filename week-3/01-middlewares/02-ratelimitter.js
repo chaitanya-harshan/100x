@@ -16,6 +16,19 @@ setInterval(() => {
     numberOfRequestsForUser = {};
 }, 1000)
 
+function rateLimiter(req,res,next) {
+  const userId = req.headers["user-id"];
+  if( numberOfRequestsForUser[userId]){
+    numberOfRequestsForUser[userId]++;
+  }
+  else numberOfRequestsForUser[userId] = 1;
+
+  if (numberOfRequestsForUser > 5) { // somehow it;s giving error for '5 or more requests return back a 404'
+    res.status(404).send("Stop Spamming the server. Idiot!")
+  }
+  next();
+}
+
 app.get('/user', function(req, res) {
   res.status(200).json({ name: 'john' });
 });

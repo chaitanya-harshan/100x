@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const zod = require('zod');
+
 const jwtPassword = 'secret';
 
 
@@ -15,6 +17,24 @@ const jwtPassword = 'secret';
  */
 function signJwt(username, password) {
     // Your code here
+    const schema = zod.object({
+        email: zod.string().email(),
+        password: zod.string().min(6)
+    });
+
+    const user = {
+        email: username,
+        password: password
+    };
+
+    const response = schema.safeParse(user);
+    if (!response.success) {
+        return null;
+    }
+    else{
+        const token = jwt.sign({username: username}, jwtPassword);
+        return token;
+    }
 }
 
 /**
@@ -27,6 +47,12 @@ function signJwt(username, password) {
  */
 function verifyJwt(token) {
     // Your code here
+    try {
+        const decoded = jwt.verify(token, jwtPassword);
+        return true;
+    } catch (error) {
+        return false;
+    }
 }
 
 /**
@@ -35,9 +61,17 @@ function verifyJwt(token) {
  * @param {string} token - The JWT string to decode.
  * @returns {object|false} The decoded payload of the JWT if the token is a valid JWT format.
  *                         Returns false if the token is not a valid JWT format.
+ * 
+ * //------------------&&&&---- WRONG   -- return T if valid and decoded & F if not valid :(
  */
 function decodeJwt(token) {
     // Your code here
+    // decodes gives the data or null (if invalid token)
+    const decoded = jwt.decode(token);
+    if ( !decoded ){
+        return false;
+    }
+    return true;
 }
 
 

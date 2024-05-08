@@ -23,4 +23,12 @@ app.get('/errorCount', function(req, res) {
   res.status(200).json({ errorCount });
 });
 
+app.use((err,req,res,next)=>{
+  if(err){
+    errorCount++;
+    res.status(404).send("Error Found.\nTotal Errors: "+errorCount);
+  }
+});
+
 module.exports = app;
+app.listen(3000);

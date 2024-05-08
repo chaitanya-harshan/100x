@@ -11,6 +11,13 @@ let requestCount = 0;
 // maintain a count of the number of requests made to the server in the global
 // requestCount variable
 
+function count (req, res, next) {
+  requestCount++;
+  next();
+}
+
+app.use(count);
+
 app.get('/user', function(req, res) {
   res.status(200).json({ name: 'john' });
 });
@@ -24,3 +31,7 @@ app.get('/requestCount', function(req, res) {
 });
 
 module.exports = app;
+
+// app.listen(3000, ()=>{
+//   console.log("server running on port 3000");
+// });
