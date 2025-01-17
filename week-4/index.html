@@ -31,6 +31,22 @@
       // calculate these 3 arrays
       // call addTodo, removeTodo, updateTodo functions on each of the
       // elements
+
+      //------------LONG - WAY-----------
+      // newTodos.forEach(element => {
+      //   const found = oldTodoState.find((item) => element.id === item.id );
+      //   if (!found) {
+      //     added.push(element);
+      //   }
+      // });
+
+      //------------DIRECT - WAY----------
+      added = newTodos.filter(newTodo => !oldTodoState.some(oldTodo => oldTodo.id === newTodo.id));
+      deleted = oldTodoState.filter(oldTodo => !newTodos.some(newTodo => newTodo.id === oldTodo.id));
+      updated = newTodos.filter(newTodo => !oldTodoState.some(oldTodo => {
+        return ((oldTodo.id === newTodo.id) && (oldTodo.title === newTodo.title) && (oldTodo.description === newTodo.description));
+      }));
+
       oldTodoState = newTodos;
     }
 
