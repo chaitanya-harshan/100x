@@ -7,4 +7,4 @@ const todoSchema = mongoose.Schema({
     completed: Boolean
 })
 
-export const todo = mongoose.model('todos', todoSchema);
+export const todosTable = mongoose.model('todos', todoSchema);
