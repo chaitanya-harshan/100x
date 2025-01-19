@@ -1,7 +1,8 @@
-const express = require("express");
-const { createTodo, updateTodo } = require("./types");
-const { todo } = require("./db");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
+import { createTodo, updateTodo } from "./types";
+import { todo } from "./db";
+
 const app = express();
 
 app.use(express.json());
