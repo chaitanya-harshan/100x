@@ -1,14 +1,27 @@
-import {atom, selector} from 'recoil'
+// store/atom/todos.js
+import { atom, selector } from "recoil";
 
 export const todosAtom = atom({
-    key: "todos",
-    default: []
-})
+  key: "todos",
+  default: [],
+});
 
-export const todosFilter = selector({
-    key: "filter",
-    get: ({get}) => {
-        const todos = get(todosAtom);
-        const searchResults = todos.filter((todo) => todo.title.toLowerCase().includes())
-    }
-})
+export const searchQueryAtom = atom({
+  key: "searchQueryAtom",
+  default: "",
+});
+
+export const filteredTodosSelector = selector({
+  key: "filteredTodosSelector",
+  get: ({ get }) => {
+    const query = get(searchQueryAtom).toLowerCase();
+    const todos = get(todosAtom);
+
+    if (!query) return todos;
+
+    return todos.filter((todo) =>
+        todo.title.toLowerCase().includes(query) ||
+        todo.description.toLowerCase().includes(query)
+    );
+  },
+});
