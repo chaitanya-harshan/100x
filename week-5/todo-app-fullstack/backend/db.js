@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
+import dotenv from 'dotenv'
 
-mongoose.connect("mongodb+srv://lemon:chaispaceX1415@cluster0.3w06p3p.mongodb.net/todos-server")
+dotenv.config()
+
+mongoose.connect(process.env.MONGODB_TODO_SERVER)
 const todoSchema = mongoose.Schema({
     title: String,
     description: String,
