@@ -3,6 +3,7 @@ import jwt from jsonwebtoken;
 import z from zod;
 import { User } from "../db";
 import { JWT_SECRET } from "../config";
+import Authenticate from "../middleware";
 
 const router = express.Router()
 
@@ -16,6 +17,12 @@ const signupSchema = z.object({
 const signinSchema = z.object({
     username: z.string().email(),
     pasword: z.string()
+})
+
+const updateSchema = z.object({
+    pasword: z.string(),
+    firstName: z.string(),
+    lastName: z.string()
 })
 
 router.post("/signup", async (req,res) => {
@@ -38,8 +45,8 @@ router.post("/signup", async (req,res) => {
             token: token
         })
     } catch (err) {
-        res.status(500).send("Internal Server error")
         console.log("Error Connecting to Database\n", err);
+        res.status(500).send("Internal Server error")
     }
 })
 
@@ -59,11 +66,25 @@ router.get("/signin", async (req,res) => {
         return res.status(411).json({message: "Error while logging in"})
     }
     
-    const token = jwt.sing({ userId: db_user._id }, JWT_SECRET)
+    const token = jwt.sign({ userId: db_user._id }, JWT_SECRET)
     return res.status(200).json({ token })
 })
 
 
+router.put("/", Authenticate, async (req, res) => {
+    const body = req.body
+    const { success } = updateSchema.safeParse(body)
+    if (!success) {
+        return res.status(411).json({message: "Invalid update/ Error while updating"})
+    }
 
+    try {
+        await User.updateOne({_id: body.userId}, body)
+        return res.status(200).json({message: "Updated Successfully"})
+    } catch (err) {
+        console.log("Error Updating to DB\n",err);
+        return res.status(500).send("Error updating to DB")
+    }
+})
 
 export default router;
