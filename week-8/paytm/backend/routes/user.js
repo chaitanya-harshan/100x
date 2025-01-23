@@ -87,4 +87,24 @@ router.put("/", Authenticate, async (req, res) => {
     }
 })
 
+
+router.get("/bulk", Authenticate, async (req, res) => {
+    const filter = req.query.filter || ""
+    const users_cursor = await User.find({
+        $or: [{
+            firstName: {'$regex': filter},
+            lastName: {'$regex': filter}
+        }]
+    })
+
+    return res.status(200).json({
+        users: users_cursor.map(user => ({
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            _id: user._id
+        }))
+    })
+})
+
 export default router;
