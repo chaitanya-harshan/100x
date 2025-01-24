@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import z from zod;
+import z from "zod";
 import { Account, User } from "../db.js";
 import { JWT_SECRET } from "../config.js";
 import Authenticate from "../middleware.js";
