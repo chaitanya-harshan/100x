@@ -46,13 +46,17 @@ router.post("/transfer", Authenticate, async (req, res) => {
           { $inc: { balance: amount } }
         ).session(session);
 
+        // COMMIT transaction & ABORT Session
         await session.commitTransaction()
         session.endSession()
+        
         return res.status(200).json({message: "Transfer Successful"})
-
+        
     } catch (err) {
+        // ABORT transaction & ABORT Session
         session.abortTransaction()
         session.endSession()
+
         console.log("Transaction Error", err);
         return res.status(400).send("Transfer Failed")
     }

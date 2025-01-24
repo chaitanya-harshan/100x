@@ -2,9 +2,10 @@ import { JWT_SECRET } from "./config.js";
 import jwt from "jsonwebtoken"
 
 function Authenticate(req, res, next) {
-    const authHeader =  req.headers.authorization
+    const authHeader =  req.headers.authorization // dont put the quotes like "Bearer jwt" in headers as it's by default seen as string
+    
     if (!authHeader.startsWith('Bearer')) {
-        return res.status(403).send()
+        return res.status(403).send("Wrong Authorization Header")
     }
     const token = authHeader.split(' ')[1]
 

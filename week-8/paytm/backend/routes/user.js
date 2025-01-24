@@ -11,16 +11,16 @@ const signupSchema = z.object({
     username: z.string().email(),
     firstName: z.string(),
     lastName: z.string(),
-    pasword: z.string()
+    password: z.string()
 })
 
 const signinSchema = z.object({
     username: z.string().email(),
-    pasword: z.string()
+    password: z.string()
 })
 
 const updateSchema = z.object({
-    pasword: z.string(),
+    password: z.string(),
     firstName: z.string(),
     lastName: z.string()
 })
@@ -31,8 +31,8 @@ router.post("/signup", async (req,res) => {
     if (!success) {
         return res.status(401).json({message: "Incorrect inputs"})
     }
-    
-    if (User.findOne({username: body.username})) {  // Existing user
+        
+    if (await User.findOne({username: body.username})) {  // Existing user
         return res.status(402).json({message: "Email already taken"})
     }
 
@@ -43,7 +43,7 @@ router.post("/signup", async (req,res) => {
         // ------- Account creation -----------
         await Account.create({
             userId: db_user._id,
-            balance: 1 + Math.random()*10000 
+            balance: Math.floor(Math.random() * 10000) + 1
         })
 
         return res.status(200).json({
@@ -59,14 +59,14 @@ router.post("/signup", async (req,res) => {
 
 router.get("/signin", async (req,res) => {
     const body = req.body;
-    const { success } = signupSchema.safeParse(body)
+    const { success } = signinSchema.safeParse(body)
     if (!success) {
         return res.status(401).json({message: "Incorrect inputs"})
     }
 
     const db_user = User.findOne({
         username: body.username,
-        pasword: body.pasword
+        password: body.password
     })
     if (!db_user) {
         return res.status(411).json({message: "Error while logging in"})
@@ -83,9 +83,9 @@ router.put("/", Authenticate, async (req, res) => {
     if (!success) {
         return res.status(411).json({message: "Invalid update/ Error while updating"})
     }
-
+    
     try {
-        await User.updateOne({_id: body.userId}, body)
+        await User.updateOne({_id: req.userId}, body)
         return res.status(200).json({message: "Updated Successfully"})
     } catch (err) {
         console.log("Error Updating to DB\n",err);
