@@ -1,7 +1,7 @@
 import express from "express";
 import jwt from jsonwebtoken;
 import z from zod;
-import { User } from "../db";
+import { Account, User } from "../db";
 import { JWT_SECRET } from "../config";
 import Authenticate from "../middleware";
 
@@ -32,13 +32,19 @@ router.post("/signup", async (req,res) => {
         return res.status(401).json({message: "Incorrect inputs"})
     }
     
-    if (User.findOne({username: body.username})) {
+    if (User.findOne({username: body.username})) {  // Existing user
         return res.status(402).json({message: "Email already taken"})
     }
 
     try {
         const db_user = await User.create(body)
         const token = jwt.sign({ userId: db_user._id }, JWT_SECRET) // JWT
+
+        // Account creation
+        await Account.create({
+            userId: db_user._id,
+            balance: 1 + Math.random()*10000 
+        })
 
         return res.status(200).json({
             message: "User created successfully",
