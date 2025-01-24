@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { MONGODB_PAYTM_KEY } from "./config";
+import { MONGODB_PAYTM_KEY } from "./config.js";
 
 mongoose.connect(MONGODB_PAYTM_KEY)
 
@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema({
 })
 
 const accountSchema = mongoose.Schema({
-    userId: {type: Schema.types.ObjectId, ref: "users"},
+    userId: {type: mongoose.Schema.Types.ObjectId, ref: "users"},
     balance: {type: Number, default: 10}
 })
 

@@ -1,9 +1,9 @@
 import express from "express";
-import jwt from jsonwebtoken;
+import jwt from "jsonwebtoken";
 import z from zod;
-import { Account, User } from "../db";
-import { JWT_SECRET } from "../config";
-import Authenticate from "../middleware";
+import { Account, User } from "../db.js";
+import { JWT_SECRET } from "../config.js";
+import Authenticate from "../middleware.js";
 
 const router = express.Router()
 
@@ -97,10 +97,10 @@ router.put("/", Authenticate, async (req, res) => {
 router.get("/bulk", Authenticate, async (req, res) => {
     const filter = req.query.filter || ""
     const users_cursor = await User.find({
-        $or: [{
-            firstName: {'$regex': filter},
-            lastName: {'$regex': filter}
-        }]
+        $or: [
+            {firstName: {'$regex': filter}},
+            {lastName: {'$regex': filter}}
+        ]
     })
 
     return res.status(200).json({

@@ -1,5 +1,5 @@
-import { JWT_SECRET } from "./config";
-import jwt from jsonwebtokens
+import { JWT_SECRET } from "./config.js";
+import jwt from "jsonwebtoken"
 
 function Authenticate(req, res, next) {
     const authHeader =  req.headers.authorization
