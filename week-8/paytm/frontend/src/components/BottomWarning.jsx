@@ -6,7 +6,7 @@ return (
         <div className="pr-2">
             {text}
         </div>
-        <Link to={to} className="cursor-pointer underline text-black">
+        <Link to={to} className="underline text-black cursor-pointer">
             {linkText}
         </Link>
     </div>
