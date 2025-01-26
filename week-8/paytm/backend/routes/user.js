@@ -29,6 +29,7 @@ router.post("/signup", async (req,res) => {
     const body = req.body;
     const { success } = signupSchema.safeParse(body)
     if (!success) {
+        console.log(success, body);
         return res.status(401).json({message: "Incorrect inputs"})
     }
         
@@ -57,14 +58,18 @@ router.post("/signup", async (req,res) => {
 })
 
 
-router.get("/signin", async (req,res) => {
+router.post("/signin", async (req,res) => {
     const body = req.body;
+    console.log(req.data, req.body);
+    
     const { success } = signinSchema.safeParse(body)
+    console.log(body, success);
+    
     if (!success) {
-        return res.status(401).json({message: "Incorrect inputs"})
+        return res.status(402).json({message: "Incorrect inputs"})
     }
 
-    const db_user = User.findOne({
+    const db_user = await User.findOne({
         username: body.username,
         password: body.password
     })
@@ -94,12 +99,17 @@ router.put("/", Authenticate, async (req, res) => {
 })
 
 
-router.get("/bulk", Authenticate, async (req, res) => {
+router.get("/bulk", Authenticate, async (req, res) => { // /bulk?filter=<value>
     const filter = req.query.filter || ""
     const users_cursor = await User.find({
-        $or: [
-            {firstName: {'$regex': filter}},
-            {lastName: {'$regex': filter}}
+        $and: [
+            {
+                $or: [
+                    {firstName: {'$regex': filter, $options: 'i'}},
+                    {lastName: {'$regex': filter, $options: 'i'}}
+                ]
+            },
+            { _id: {$ne: req.userId}}
         ]
     })
 

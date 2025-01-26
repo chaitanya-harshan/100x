@@ -24,3 +24,5 @@ const accountSchema = mongoose.Schema({
 
 export const User = mongoose.model("users", userSchema)
 export const Account = mongoose.model("accounts", accountSchema)
+
+// console.log(await User.findOne());

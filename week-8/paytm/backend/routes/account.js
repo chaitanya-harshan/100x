@@ -25,15 +25,16 @@ router.post("/transfer", Authenticate, async (req, res) => {
     const sender = await Account.findOne({userId: from}).session(session)
     if (!sender) {
         await session.abortTransaction()
-        return res.status(400).send("Invalid Sender Account")
+        return res.status(400).json({message: "Invalid Sender Account"})
     }
     if (sender.balance < amount) {
         await session.abortTransaction()
-        return res.status(400).send("Insufficient Balance")
+        return res.status(401).json({message: "Insufficient Balance"})
     }
-    if (!await Account.findOne({userId: to}).session(session)) {
+    const receiver = await Account.findOne({userId: to}).session(session)
+    if (!receiver) {
         await session.abortTransaction()
-        return res.status(400).send("Invalid Receiver Account")
+        return res.status(402).json({message: "Invalid Receiver Account"})
     }
 
     try {
@@ -58,7 +59,7 @@ router.post("/transfer", Authenticate, async (req, res) => {
         session.endSession()
 
         console.log("Transaction Error", err);
-        return res.status(400).send("Transfer Failed")
+        return res.status(403).json({message: "Transfer Failed"})
     }
 })
 
