@@ -4,13 +4,25 @@ import InputBox from "../components/InputBox"
 import SubHeading from "../components/SubHeading"
 import Button from "../components/Button"
 import BottomWarning from "../components/BottomWarning"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 const SignIn = () => {
-    const {username, setUsername} = useState("")
-    const {password, setPassword} = useState("")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const navigate = useNavigate()
+  
+  async function handleSubmit() {
+    console.log({username,password});
     
-    function handleSubmit() {
-    }
+    const response = await axios.post("http://localhost:3000/api/v1/user/signin", {
+      username,
+      password
+    })
+    localStorage.setItem("jwt", response.data.token)
+    console.log(response.data);
+    navigate("/dashboard")
+  }
 
   return (
     <div className="h-screen bg-slate-300 flex justify-center">

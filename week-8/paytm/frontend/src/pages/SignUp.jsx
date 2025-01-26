@@ -7,19 +7,21 @@ import BottomWarning from "../components/BottomWarning"
 import axios from "axios"
 
 const SignUp = () => {
-    const {firstName, setFirstName} = useState("")
-    const {lastName, setLastName} = useState("")
-    const {username, setUsername} = useState("")
-    const {password, setPassword} = useState("")
-    
-    function handleSubmit() {
-      axios.post("https://localhost:3000/api/v1/user/signup", {
-        username,
-        password,
-        firstName,
-        lastName
-      })
-    }
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  
+  async function handleSubmit() {
+    const res = await axios.post("http://localhost:3000/api/v1/user/signup", {
+      username,
+      password,
+      firstName,
+      lastName
+    })
+    localStorage.setItem("jwt", res.data.token) // Storing the JWT in local storage
+    console.log(res.data);
+  }
 
   return (
     <div className="h-screen bg-slate-300 flex justify-center">
