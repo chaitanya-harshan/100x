@@ -1,0 +1,33 @@
+<html>
+<script>
+    let timeout;
+    function debounce(){
+        clearTimeout(timeout);
+        timeout = setTimeout(function(){
+            interest();
+        },200);
+    } 
+
+    async function interest(){
+        const principal = document.getElementById("principal").value;
+        const interest = document.getElementById("interest").value;
+        const time = document.getElementById("time").value;
+
+        const response = await fetch("https://sum-server.100xdevs.com/interest?principal="+principal+"&rate="+interest+"&time="+time);
+        const ans = await response.json();
+        document.getElementById("finalinterest").innerHTML = ans.interest;
+    }
+</script>
+<body>
+    <input oninput="debounce()" type="number" placeholder="principal amount" id="principal">
+    <br><br>
+    <input oninput="debounce()" type="number" placeholder="interest rate" id="interest">
+    <br><br>
+    <input oninput="debounce()" type="number" placeholder="time" id="time">
+    <br><br>
+
+    <!-- <button oninput="interest()">Calculate Intrest</button> -->
+    <br>
+    <div id="finalinterest" ></div>
+</body>
+</html>

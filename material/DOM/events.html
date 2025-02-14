@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p onclick="this.innerHTML='I told you, I will change'">click me & I'll change</p>
+
+    <input type="text" id="typing" oninput="convert_upper()">
+
+    <h1 
+        onmouseover="this.innerHTML='Bitch'" 
+        onmouseout="this.innerHTML='Lasagna'">
+        Mouse over me
+    </h1>
+
+    <script>
+        function convert_upper(){
+            const char = document.getElementById("typing");
+            char.value = char.value.toUpperCase();
+        }
+    </script>
+</body>
+</html>

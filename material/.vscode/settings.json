@@ -1,0 +1,24 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "[!w]*/**": true,
+        "w[!e]*/**": true,
+        "we[!e]*/**": true,
+        "wee[!k]*/**": true,
+        "week[!-]*/**": true,
+        "week-[!8]*/**": true,
+        "week-8/[!t]*/**": true,
+        "week-8/t[!a]*/**": true,
+        "week-8/ta[!i]*/**": true,
+        "week-8/tai[!l]*/**": true,
+        "week-8/tail[!w]*/**": true,
+        "week-8/tailw[!i]*/**": true,
+        "week-8/tailwi[!n]*/**": true,
+        "week-8/tailwin[!d]*/**": true
+    }
+}

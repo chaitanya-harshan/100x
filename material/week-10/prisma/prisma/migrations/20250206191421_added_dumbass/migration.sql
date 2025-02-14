@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "dumbass" INTEGER NOT NULL DEFAULT 69;

@@ -1,0 +1,15 @@
+{
+  "name": "mongo",
+  "version": "1.0.0",
+  "description": "learning mongoose",
+  "main": "index.js",
+  "scripts": {
+    "devstart": "nodemon script.js"
+  },
+  "author": "chaitanya",
+  "license": "ISC",
+  "dependencies": {
+    "mongo": "file:",
+    "mongoose": "^8.3.4"
+  }
+}

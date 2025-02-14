@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>To Do</title>
+</head>
+
+<script>
+    let global_id = 1;
+
+    function addTodo(){
+        const title = document.getElementById("title").value;
+        const desciption = document.getElementById("desciption").value;
+        const todoList = document.getElementById("todoList");
+
+        todoList.appendChild( createTodo(title, desciption, global_id++) );
+    }
+
+    function createTodo(title, desciption, id){
+        const todo = document.createElement("div");
+        const child_title = document.createElement("div");
+        const child_description = document.createElement("div");
+        const done = document.createElement("button");
+
+        todo.setAttribute("id", id);
+        done.setAttribute("onclick", `markDone(${id})`);
+
+        child_title.innerHTML = title;
+        child_description.innerHTML = desciption;
+        done.innerHTML = "Mark as Done";
+        
+        todo.appendChild(child_title);
+        todo.appendChild(child_description);
+        todo.appendChild(done);
+
+        return todo;
+    }
+
+    function markDone(todoID){
+        document.getElementById(todoID).children[2].innerHTML = "Done"
+    }
+</script>
+
+<body>
+    <input type="text" placeholder="title" id="title"/>
+    <br><br>
+    <input type="text" placeholder="desciption" id="desciption"/>
+    <br><br>
+    <button onclick="addTodo()">Add TODO</button>
+    <div id="todoList"></div>
+</body>
+</html>
