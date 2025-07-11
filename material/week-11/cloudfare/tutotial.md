@@ -2,6 +2,6 @@
 
 # npm create cloudfare -- <project-name>
 # npx wrangler login
--> to deploy
+# -> to deploy
  LocalHost - npm run dev
  Cloudfare - npm run deploy
