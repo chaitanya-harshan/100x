@@ -1,0 +1,24 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "[!m]*/**": true,
+        "m[!a]*/**": true,
+        "ma[!t]*/**": true,
+        "mat[!e]*/**": true,
+        "mate[!r]*/**": true,
+        "mater[!i]*/**": true,
+        "materi[!a]*/**": true,
+        "materia[!l]*/**": true,
+        "material/[!w]*/**": true,
+        "material/w[!e]*/**": true,
+        "material/we[!e]*/**": true,
+        "material/wee[!k]*/**": true,
+        "material/week[!-]*/**": true,
+        "material/week-[!1]*/**": true,
+        "material/week-1[!2]*/**": true
+    }
+}
