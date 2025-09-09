@@ -1,11 +1,14 @@
 import prisma from "@repo/db/client";
 import { NextResponse } from "next/server";
+// import { useBalance } from "@repo/store/useBalance";
 
 export const GET = async () => {
+  // const balance = useBalance()
+
   await prisma.user.create({
     data: {
-      email: "chaitanyareigns98@gmail.com",
-      name: "Chaitanya",
+      email: "chaitanyaharshan.official@gmail.com",
+      name: "Chaitanya Harshan",
     },
   });
 
