@@ -15,10 +15,6 @@ export default function Layout({
             </div>
         </div>
             {children}
-     {children}
-     {children}
-     {children}
-     {children}
     </div>
   );
 }
